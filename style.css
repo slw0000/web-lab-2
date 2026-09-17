@@ -1,0 +1,216 @@
+:root {
+    --color-current-student-box: #7abfff;
+
+    --color-table-background: #efefef;
+    --color-table-selected-row: #DEE2E6;
+
+    --color-button-accept: rgb(59, 172, 59);
+    --color-button-delete: rgb(230, 68, 68);
+    --color-button-default: rgb(68, 82, 230);
+    --color-button-disable: #ddd;
+
+    --color-button-font-default: white;
+    --color-button-font-disable: #777;
+
+    --color-student-info-back: #efefef;
+    --color-student-info-border: rgb(151, 151, 151);
+}
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 1.125rem;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+h1, 
+h4 {
+    text-align: center;
+    font-weight: 700;
+}
+
+h4 {
+    width: fit-content;
+    text-align: center;
+    margin: 1.25rem auto;
+    padding: 0.625rem 0.625rem;
+    background-color: var(--color-current-student-box);
+    border: 1px solid black;
+    border-radius: 0.625rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+/* таблица на главной странице */
+
+
+.table-container {
+    width: calc(100% - 2rem);
+    max-width: 60rem;
+    overflow-x: auto;
+    margin: 0 auto;
+	margin-bottom: 1.25rem;
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse; 
+}
+
+.table th {
+	font-weight: bold;
+	background: var(--color-table-background);
+	border: 1px solid black;
+    padding: 0.3125rem;
+}
+
+.table td {
+	border: 1px solid black;
+	padding: 0.3125rem;
+}
+
+.selected {
+    background-color: var(--color-table-selected-row);
+}
+
+#title-for-blind {
+    visibility: hidden;
+}
+
+/* Общее оформление кнопок для всех страниц */
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    color: var(--color-button-font-default);
+    background-color: var(--color-button-default);
+    border: 1px solid black;
+    border-radius: 0.3125rem;
+    margin: 0.3125rem;
+    padding: 0.3125rem;
+}
+
+#delete-button {
+    background-color: var(--color-button-delete);
+}
+
+#accept-button {
+    background-color: var(--color-button-accept);
+}
+
+.buttons:disabled {
+    color: var(--color-button-font-disable);
+    background-color: var(--color-button-disable) !important;
+    cursor: not-allowed;
+}
+
+.buttons:not(:disabled) {
+    cursor: pointer;
+}
+
+/* Карточка студента в досье */
+
+.student-card {
+    background-color: var(--color-student-info-back);
+    width: calc(100% - 32px);
+    max-width: 60rem;
+    margin: 1.25rem auto;
+    border: 1px solid var(--color-student-info-border);
+    border-radius: 0.625rem;
+    padding: 1.25rem;
+}
+
+#student-full-name {
+    text-align: center;
+    margin-bottom: 1.25rem;
+    margin-top: 0;
+}
+
+.student-card dt {
+    font-weight: bold;
+    margin-bottom: 0.625rem;
+}
+
+.student-card dd {
+    margin-bottom: 1.25rem;
+}
+
+
+.info-row {
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+
+/* Оформление формы добавления студента */
+.form-row {
+    display: grid;
+    margin-bottom: 0.9375rem;
+    grid-template-columns: 25% 75%;
+    align-items: center;
+}
+
+.form-row label {
+    font-weight: 600;
+    min-width: 6.25rem;
+}
+
+.required {
+    color: red;
+}
+
+.student-card input,
+.student-card textarea {
+    width: 100%;
+    min-width: 0;
+    min-height: 1.875rem;
+}
+
+.student-info #notes {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+textarea {
+    resize: vertical;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+
+/* медиа запрос для адаптивности */
+
+@media (max-width: 600px) {
+    .form-row,
+    .info-row {
+        grid-template-columns: 1fr;
+        gap: 0.3125rem;
+    }
+}
+
+@media (min-width: 1920px) {
+    .student-card,
+    .table-container {
+        max-width: 90rem;
+    }
+}
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Досье студента</title>
+    <link href="style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+    <header>
+        <h1>Досье студента</h1>
+        <nav class="buttons-container">
+            <a href="index.html" class="buttons">К списку студентов</a>
+            <button class="buttons edit-button">Изменить данные</button>
+        </nav>
+    </header>
+    <main>
+        <div class="student-card">
+            <h2 id="student-full-name">—</h2>
+            <dl class="student-info">
+                <div class="info-row">
+                    <dt>Группа:</dt>
+                    <dd id="group">—</dd>
+                </div>
+                <div class="info-row">
+                    <dt>ИСУ id:</dt>
+                    <dd id="isuId">—</dd>
+                </div>
+                <div class="info-row">
+                    <dt>Номер общежития:</dt>
+                    <dd id="dormitoryNumber">—</dd>
+                </div>
+                <div class="info-row">
+                    <dt>Комната:</dt>
+                    <dd id="room">—</dd>
+                </div>
+                <div class="info-row">
+                    <dt>Срок заселения:</dt>
+                    <dd id="moveInDate">—</dd>
+                </div>
+                <div class="info-row">
+                    <dt>Иностранец:</dt>
+                    <dd id="foreigner">—</dd>
+                </div>
+                <div class="info-row">
+                    <dt>Заметки:</dt>
+                    <dd id="notes">—</dd>
+                </div>
+            </dl>
+        </div>
+    </main>
+    <script type="module" src="scripts/student.js"></script>
+</body>
+</html>

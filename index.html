@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список студентов</title>
+    <link href="style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+    <header>
+        <h1>Список студентов</h1>
+    </header>
+    <main>
+        <div class="table-container">
+            <table class="table">
+                <caption id="title-for-blind">Таблица зарегестрированных студентов</caption>
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Группа</th>
+                        <th>ИСУ id</th>
+                        <!--
+                        <th>Номер общежития</th>
+                        <th>Комната</th>
+                        <th>Срок заселения</th>
+                        <th>Иностранец</th>
+                        <th>Заметки</th>
+                        -->
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="buttons-container">
+            <a href="form.html" class="buttons">Добавить студента</a>
+            <button class="buttons edit-button" disabled>Редактировать студента</button>
+            <button class="buttons info-button" disabled>Досье студента</button>
+            <button class="buttons delete-button" id="delete-button" disabled>Удалить студента</button>
+        </div>
+    </main>
+    <script type="module" src="scripts/index.js"></script>
+</body>
+</html>

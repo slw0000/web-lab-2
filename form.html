@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма управления студентами</title>
+    <link href="style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+    <header>
+        <h1>Форма управления студентами</h1>
+    </header>
+    <main>
+        <form id="student-form" class="student-card">
+            <div class="form-row">
+                <label for="surname">Фамилия <span class="required">*</span></label>
+                <input type="text" id="surname" name="surname" minlength="2" maxlength="50" placeholder="Иванов" required>
+            </div>
+            <div class="form-row">
+                <label for="name">Имя <span class="required">*</span></label>
+                <input type="text" id="name" name="name" minlength="2" maxlength="50" placeholder="Иван" required>
+            </div>
+            <div class="form-row">
+                <label for="patronymic">Отчество</label>
+                <input type="text" id="patronymic" name="patronymic" minlength="2" maxlength="50" placeholder="Иванович">
+            </div>
+            <div class="form-row">
+                <label for="group">Группа <span class="required">*</span></label>
+                <input type="text" id="group" name="group" pattern="[A-Z][0-9]{4}" placeholder="W1234" required>
+            </div>
+            <div class="form-row">
+                <label for="isuId">ИСУ id <span class="required">*</span></label>
+                <input type="text" id="isuId" name="isuId" pattern="[0-9]{6}" placeholder="123456" oninvalid="this.setCustomValidity('ИСУ id должен содержать 6 цифр')" oninput="this.setCustomValidity('')" required>
+            </div>
+            <div class="form-row">
+                <label for="dormitoryNumber">Номер общежития</label>
+                <input type="text" id="dormitoryNumber" name="dormitoryNumber" maxlength="10">     
+            </div>
+            <div class="form-row">
+                <label for="room">Комната</label>
+                <input type="text" id="room" name="room" maxlength="10">
+            </div>
+            <div class="form-row">
+                <label for="moveInDate">Дата заселения</label>
+                <input type="date" id="moveInDate" name="moveInDate">
+            </div>
+            <div class="form-row">
+                <label for="foreigner">Иностранец</label>
+                <input type="checkbox" id="foreigner" name="foreigner">
+            </div>
+            <div class="form-row">
+                <label for="notes">Заметки</label>
+                <textarea id="notes" name="notes"></textarea>
+            </div>
+            <div class="buttons-container">
+                <button type="submit" class="buttons" id="accept-button">Добавить студента</button>
+                <a href="index.html" class="buttons" id="delete-button">Отменить изменения</a>
+            </div>
+        </form>
+    </main>
+    <script type="module" src="scripts/form.js"></script>
+</body>
+</html>
