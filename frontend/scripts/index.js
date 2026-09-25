@@ -1,7 +1,5 @@
 console.log('index.js loaded');
 
-import { getAllStudents, deleteStudent } from './database.js';
-
 updateTable();
 
 // Добавление логики клика по строке таблицы 
@@ -62,8 +60,16 @@ deleteButton.onclick = async function() {
         const selectedRow = document.querySelector('.selected');
         if (selectedRow) {
             let id = selectedRow.id;
-            await deleteStudent(Number(id));
-            await updateTable()
+            
+            const response = await fetch(`http://127.0.0.1:8080/api/requests/${id}`, {
+                method: "DELETE"
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+
+            await updateTable();
         }
     } catch (error) {
         console.log(error)
@@ -74,7 +80,16 @@ deleteButton.onclick = async function() {
 
 async function updateTable() {
     try {
-        const students = await getAllStudents()
+        const response = await fetch("http://127.0.0.1:8080/api/requests")
+
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const students = data.students;
+
+
 
         const tableBody = document.getElementById('table-body');
         tableBody.innerHTML = '';

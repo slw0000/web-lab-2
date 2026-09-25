@@ -1,20 +1,23 @@
 console.log("form.js loaded");
 
-import { validateStudent } from "./students-service.js";
-import { addStudent, getStudentByDbId, updateStudent } from "./database.js";
-
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id');
+
+let prevStudent = null;
 
 // Подставляем в форм
 
 if (id) {
     try {
-        let prevStudent = await getStudentByDbId(id);
 
-        if (!prevStudent) {
-            throw new Error("Студента с таким id не существует!")
+        const response = await fetch(`http://127.0.0.1:8080/api/requests/${id}`)
+
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
         }
+
+        const data = await response.json();
+        prevStudent = data.student;
 
         document.getElementById('surname').value = prevStudent.surname
         document.getElementById('name').value = prevStudent.name;
@@ -59,20 +62,49 @@ form.addEventListener('submit', async function(event) {
         isuId: formData.get('isuId'),
         dormitoryNumber: formData.get('dormitoryNumber'),
         room: formData.get('room'),
-        moveInDate: formData.get('moveInDate'),
+        moveInDate: formData.get('moveInDate') || null,
         foreigner: formData.has('foreigner'),
         notes: formData.get('notes')
     };
 
-    console.log('Student:', student)
-
     try {
-        student = await validateStudent(student, id);
-        
         if (id) {
-            await updateStudent(student, id)
+            const changedFields = {};
+
+            for (const key of Object.keys(student)) {
+                if (student[key] !== prevStudent[key]) {
+                    changedFields[key] = student[key];
+                }
+            }
+
+            if (Object.keys(changedFields).length === 0) {
+                alert("Изменений нет!");
+                return;
+            }
+
+            const response = await fetch(`http://127.0.0.1:8080/api/requests/${id}`, {
+                method: "PATCH",
+                body: JSON.stringify(changedFields),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+
+            if (!response.ok) {
+                console.error("HTTP status:", response.status);
+            }
         } else {
-            await addStudent(student);
+            const response = await fetch("http://127.0.0.1:8080/api/requests/", {
+                method: "POST",
+                body: JSON.stringify(student),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+
+            if (!response.ok) {
+                console.error("HTTP status:", response.status);
+            }
         }
 
         window.location.href = 'index.html';
