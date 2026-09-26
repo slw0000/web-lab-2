@@ -6,6 +6,7 @@ from regex import fullmatch
 
 fio_pattern = r"\p{L}[\p{L} -`]*\p{L}"
 
+
 class StudentInfoSchema(BaseModel):
     name: str = Field(min_length=2, max_length=50)
     surname: str = Field(min_length=2, max_length=50)
@@ -14,7 +15,7 @@ class StudentInfoSchema(BaseModel):
     isuId: str = Field(pattern=r"^[1-9]\d{5}$")
     dormitoryNumber: Optional[int] = Field(ge=1, le=100)
     room: Optional[int] = Field(ge=1, le=1000)
-    moveInDate: Optional[date] 
+    moveInDate: Optional[date]
     foreigner: bool
     notes: str
 
@@ -22,8 +23,8 @@ class StudentInfoSchema(BaseModel):
     @classmethod
     def clean_and_validate_fio(cls, value):
         if not isinstance(value, str):
-                    return value
-        
+            return value
+
         value = value.strip()
 
         if value == "":
@@ -52,7 +53,7 @@ class StudentPatchSchema(BaseModel):
     def clean_and_validate_fio(cls, value):
         if not isinstance(value, str):
             return value
-    
+
         value = value.strip()
 
         if value == "":
@@ -68,4 +69,3 @@ class StudentFilterSchema(BaseModel):
     # просто заглушка пока что
     id: str
     name: str
-

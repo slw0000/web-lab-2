@@ -22,6 +22,12 @@ if (id) {
         document.getElementById('notes').textContent = displayValue(prevStudent.notes);
 
     } catch (error) {
+        let errorContainer = document.querySelector('.error-container');
+        let errorText = errorContainer.querySelector('p');
+
+        errorText.textContent = error.message
+        errorContainer.hidden = false
+
         console.log(error.message);
     };
 }

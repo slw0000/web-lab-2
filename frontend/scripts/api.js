@@ -1,7 +1,7 @@
 const apiRoute = "http://127.0.0.1:8080/api/requests/"
 
 async function errorHandler(response) {
-    const data = await response.json();
+    const data = await response.json().catch(() => null);
 
     switch (response.status) {
         case 422:
