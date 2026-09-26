@@ -1,3 +1,5 @@
+import { getAllStudents, deleteStudent } from "./api.js"
+
 console.log('index.js loaded');
 
 updateTable();
@@ -34,7 +36,6 @@ element.onclick = function(event) {
 // Подключение ссылок к кнопкам кнопок
 
 const editButton = document.querySelector('.edit-button');
-
 editButton.onclick = function() {
     const selectedRow = document.querySelector('.selected');
     if (selectedRow) {
@@ -44,7 +45,6 @@ editButton.onclick = function() {
 };
 
 const infoButton = document.querySelector('.info-button');
-
 infoButton.onclick = function() {
     const selectedRow = document.querySelector('.selected');
     if (selectedRow) {
@@ -54,25 +54,23 @@ infoButton.onclick = function() {
 };
 
 const deleteButton = document.querySelector('.delete-button');
-
 deleteButton.onclick = async function() {
     try {
         const selectedRow = document.querySelector('.selected');
+
         if (selectedRow) {
             let id = selectedRow.id;
-            
-            const response = await fetch(`http://127.0.0.1:8080/api/requests/${id}`, {
-                method: "DELETE"
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`);
-            }
-
+            await deleteStudent(id);
             await updateTable();
         }
     } catch (error) {
-        console.log(error)
+        let errorContainer = document.querySelector('.error-container');
+        let errorText = errorContainer.querySelector('p');
+
+        errorText.textContent = error.message
+        errorContainer.hidden = false
+
+        console.log(error.message);
     }
 };
 
@@ -80,16 +78,7 @@ deleteButton.onclick = async function() {
 
 async function updateTable() {
     try {
-        const response = await fetch("http://127.0.0.1:8080/api/requests/")
-
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const students = data.students;
-
-
+        const students = await getAllStudents()
 
         const tableBody = document.getElementById('table-body');
         tableBody.innerHTML = '';
@@ -122,7 +111,13 @@ async function updateTable() {
         document.querySelector('.info-button').disabled = true;
         document.querySelector('.delete-button').disabled = true;
     } catch (error) {
-        console.log(error.message)
+        let errorContainer = document.querySelector('.error-container');
+        let errorText = errorContainer.querySelector('p');
+
+        errorText.textContent = error.message
+        errorContainer.hidden = false
+
+        console.log(error.message);
     }
 };
 

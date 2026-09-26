@@ -56,7 +56,7 @@ def delete_student_by_id(student_id: int):
 
     if not status:
         raise HTTPException(status_code=404,
-                                detail=f"Student with id={student_id} was not found")
+                            detail=f"Student with id={student_id} was not found")
 
     
 @router.api_route("/", methods=["QUERY"]) # todo

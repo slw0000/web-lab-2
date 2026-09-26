@@ -1,8 +1,6 @@
 from pathlib import Path
 import json
 
-from backend.schemas.student import StudentInfoSchema
-
 
 JSON_DIR = Path(__file__).joinpath("../..", "data/data.json").resolve()
 

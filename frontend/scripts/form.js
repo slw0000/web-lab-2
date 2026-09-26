@@ -1,23 +1,16 @@
+import { getStudentById, createStudent, editStudent } from "./api.js";
+
 console.log("form.js loaded");
 
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id');
-
 let prevStudent = null;
 
-// Подставляем в форм
+// Подставляем в форму
 
 if (id) {
     try {
-
-        const response = await fetch(`http://127.0.0.1:8080/api/requests/${id}`)
-
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        prevStudent = data.student;
+        prevStudent = await getStudentById(id)
 
         document.getElementById('surname').value = prevStudent.surname
         document.getElementById('name').value = prevStudent.name;
@@ -40,8 +33,13 @@ if (id) {
         header.appendChild(subtitle)
 
     } catch (error) {
+        let errorContainer = document.querySelector('.error-container');
+        let errorText = errorContainer.querySelector('p');
+
+        errorText.textContent = error.message
+        errorContainer.hidden = false
+
         console.log(error.message);
-        alert(error.message);
     };
 }
 
@@ -77,40 +75,23 @@ form.addEventListener('submit', async function(event) {
                 }
             }
 
-            if (Object.keys(changedFields).length === 0) {
-                alert("Изменений нет!");
-                return;
+            if (Object.keys(changedFields).length !== 0) {
+                await editStudent(id, changedFields);
             }
 
-            const response = await fetch(`http://127.0.0.1:8080/api/requests/${id}`, {
-                method: "PATCH",
-                body: JSON.stringify(changedFields),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-
-            if (!response.ok) {
-                console.error("HTTP status:", response.status);
-            }
         } else {
-            const response = await fetch("http://127.0.0.1:8080/api/requests/", {
-                method: "POST",
-                body: JSON.stringify(student),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-
-            if (!response.ok) {
-                console.error("HTTP status:", response.status);
-            }
+            await createStudent(student);
         }
 
         window.location.href = 'index.html';
 
     } catch (error) {
-        console.log(error.message)
-        alert(error.message);
+        let errorContainer = document.querySelector('.error-container');
+        let errorText = errorContainer.querySelector('p');
+
+        errorText.textContent = error.message
+        errorContainer.hidden = false
+
+        console.log(error.message);
     };
 });

@@ -28,7 +28,7 @@ def validate_new_student(student_info: StudentInfoSchema, new: bool = True, stud
 
     if not check_availiable_isuId(student["isuId"]):
         raise HTTPException(status_code=409,
-                            detail=f"Студент с isuId={student["isuId"]} уже существует")
+                            detail=f"Student with isuId={student["isuId"]} already exists")
 
     return student
 
@@ -42,7 +42,7 @@ def validate_patched_student(student_info: StudentPatchSchema, student_id: int):
     isu_id = student.get("isuId")
     if isu_id is not None and not check_unique_isuId(isu_id, student_id):
             raise HTTPException(status_code=409,
-                                detail=f"ИСУ {student["isuId"]} уже занят другим студентом")
+                                detail=f"ISU {student["isuId"]} alredy taken by another student")
 
     
     return student

@@ -1,3 +1,5 @@
+import { getStudentById } from "./api.js";
+
 console.log("student.js loaded");
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -6,14 +8,7 @@ const id = urlParams.get('id');
 // Подставляем текст в соответсущие поля, аналогично как в form.js 
 if (id) {
     try {
-        const response = await fetch(`http://127.0.0.1:8080/api/requests/${id}`)
-
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const prevStudent = data.student;
+        const prevStudent = await getStudentById(id)
 
         document.getElementById('student-full-name').textContent = `${prevStudent.surname} ${prevStudent.name} ${prevStudent.patronymic ?? ''}`
 

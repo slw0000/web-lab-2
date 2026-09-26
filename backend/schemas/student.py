@@ -30,7 +30,7 @@ class StudentInfoSchema(BaseModel):
             return value
 
         if not fullmatch(fio_pattern, value):
-            raise ValueError("Допустимы только буквы, пробелы и дефисы")
+            raise ValueError("Allowed only letters, space and '–'")
 
         return value
 
@@ -59,7 +59,7 @@ class StudentPatchSchema(BaseModel):
             return value
 
         if not fullmatch(fio_pattern, value):
-            raise ValueError("Допустимы только буквы, пробелы и дефисы")
+            raise ValueError("Allowed only letters, space and '–'")
 
         return value
 

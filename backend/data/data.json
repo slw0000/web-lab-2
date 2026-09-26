@@ -13,7 +13,7 @@
         "id": 1
     },
     {
-        "name": "Артём",
+        "name": "Ар",
         "surname": "Иванов",
         "patronymic": "",
         "group": "Q1234",
@@ -21,7 +21,7 @@
         "dormitoryNumber": null,
         "room": null,
         "moveInDate": null,
-        "foreigner": true,
+        "foreigner": false,
         "notes": "",
         "id": 2
     },
