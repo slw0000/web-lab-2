@@ -6,6 +6,7 @@ from backend.schemas.student import StudentInfoSchema
 
 JSON_DIR = Path(__file__).joinpath("../..", "data/data.json").resolve()
 
+
 def init_data_json(directory: Path = JSON_DIR) -> None: 
     if not directory.exists():
         with directory.open("w", encoding="utf-8") as file:
@@ -20,13 +21,12 @@ def init_data_json(directory: Path = JSON_DIR) -> None:
 
 
 
-def add_student_json(student_info: StudentInfoSchema, directory: Path = JSON_DIR) -> int:
+def add_student_json(student_data: dict, directory: Path = JSON_DIR) -> int:
     with directory.open("r+", encoding="utf-8") as file:
         students = json.load(file)
 
         next_id = max((student["id"] for student in students), default=0) + 1
 
-        student_data = student_info.model_dump(mode="json")
         student_data["id"] = next_id
         students.append(student_data)
 

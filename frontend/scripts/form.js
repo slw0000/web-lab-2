@@ -60,8 +60,8 @@ form.addEventListener('submit', async function(event) {
         patronymic: formData.get('patronymic'),
         group: formData.get('group'),
         isuId: formData.get('isuId'),
-        dormitoryNumber: formData.get('dormitoryNumber'),
-        room: formData.get('room'),
+        dormitoryNumber: formData.get('dormitoryNumber') === "" ? null : Number(formData.get('dormitoryNumber')),
+        room: formData.get('room') === "" ? null : Number(formData.get('room')),
         moveInDate: formData.get('moveInDate') || null,
         foreigner: formData.has('foreigner'),
         notes: formData.get('notes')

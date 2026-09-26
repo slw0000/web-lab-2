@@ -38,13 +38,13 @@ def add_new_student(student_info: StudentInfoSchema):
             "student": validated_student}
          
 
-@router.patch("/{student_id}", status_code=201) 
+@router.patch("/{student_id}", status_code=200) 
 def edit_student_by_id(student_id: int, student_info: StudentPatchSchema):
-    validated_student = validate_patched_student(student_info)
+    validated_student = validate_patched_student(student_info, student_id=student_id)
     status = update_student(student_id, validated_student)
 
     if status:
-        return {"message": f"Student with id=${student_id} updated succesfully"}
+        return {"message": f"Student with id={student_id} updated succesfully"}
 
     raise HTTPException(status_code=404, 
                         detail=f"Student with id={student_id} was not found")

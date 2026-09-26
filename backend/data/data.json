@@ -1,15 +1,41 @@
 [
     {
-        "name": "цццццц",
-        "surname": "йййй",
+        "name": "Иван",
+        "surname": "Иванов",
         "patronymic": "",
-        "group": "W1234",
-        "isuId": "123111",
-        "dormitoryNumber": "",
-        "room": "",
+        "group": "Q1234",
+        "isuId": "123456",
+        "dormitoryNumber": null,
+        "room": null,
         "moveInDate": null,
         "foreigner": false,
         "notes": "",
         "id": 1
+    },
+    {
+        "name": "Артём",
+        "surname": "Иванов",
+        "patronymic": "",
+        "group": "Q1234",
+        "isuId": "121212",
+        "dormitoryNumber": null,
+        "room": null,
+        "moveInDate": null,
+        "foreigner": true,
+        "notes": "",
+        "id": 2
+    },
+    {
+        "name": "Golubev",
+        "surname": "Artem",
+        "patronymic": "",
+        "group": "Q1212",
+        "isuId": "111111",
+        "dormitoryNumber": null,
+        "room": null,
+        "moveInDate": null,
+        "foreigner": false,
+        "notes": "",
+        "id": 3
     }
 ]

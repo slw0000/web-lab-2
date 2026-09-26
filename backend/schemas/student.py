@@ -1,32 +1,67 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from datetime import date
 from typing import Optional
+from regex import fullmatch
+
+
+fio_pattern = r"\p{L}[\p{L} -`]*\p{L}"
 
 class StudentInfoSchema(BaseModel):
-    name: str
-    surname: str
-    patronymic: Optional[str]
-    group: str
-    isuId: str
-    dormitoryNumber: str
-    room: str
-    moveInDate: Optional[date] = None
+    name: str = Field(min_length=2, max_length=50)
+    surname: str = Field(min_length=2, max_length=50)
+    patronymic: str = Field(min_length=0, max_length=50)
+    group: str = Field(pattern=r"^[A-Z]\d{4}$")
+    isuId: str = Field(pattern=r"^[1-9]\d{5}$")
+    dormitoryNumber: Optional[int] = Field(ge=1, le=100)
+    room: Optional[int] = Field(ge=1, le=1000)
+    moveInDate: Optional[date] 
     foreigner: bool
     notes: str
 
+    @field_validator("name", "surname", "patronymic", mode="before")
+    @classmethod
+    def clean_and_validate_fio(cls, value):
+        if not isinstance(value, str):
+                    return value
+        
+        value = value.strip()
+
+        if value == "":
+            return value
+
+        if not fullmatch(fio_pattern, value):
+            raise ValueError("Допустимы только буквы, пробелы и дефисы")
+
+        return value
+
 
 class StudentPatchSchema(BaseModel):
-    name: Optional[str] = None
-    surname: Optional[str] = None
-    patronymic: Optional[str] = None
-    group: Optional[str] = None
-    isuId: Optional[str] = None
-    dormitoryNumber: Optional[str] = None
-    room: Optional[str] = None
+    name: str = Field(default="", min_length=2, max_length=50)
+    surname: str = Field(default="", min_length=2, max_length=50)
+    patronymic: str = Field(default="", min_length=0, max_length=50)
+    group: str = Field(default="", pattern=r"^[A-Z]\d{4}$")
+    isuId: str = Field(default="", pattern=r"^[1-9]\d{5}$")
+    dormitoryNumber: Optional[int] = Field(default=None, ge=1, le=100)
+    room: Optional[int] = Field(default=None, ge=1, le=1000)
     moveInDate: Optional[date] = None
-    foreigner: Optional[bool] = None
-    notes: Optional[str] = None
+    foreigner: bool = False
+    notes: str = ""
 
+    @field_validator("name", "surname", "patronymic", mode="before")
+    @classmethod
+    def clean_and_validate_fio(cls, value):
+        if not isinstance(value, str):
+            return value
+    
+        value = value.strip()
+
+        if value == "":
+            return value
+
+        if not fullmatch(fio_pattern, value):
+            raise ValueError("Допустимы только буквы, пробелы и дефисы")
+
+        return value
 
 
 class StudentFilterSchema(BaseModel):
