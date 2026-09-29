@@ -50,5 +50,18 @@
         "foreigner": true,
         "notes": "",
         "id": 4
+    },
+    {
+        "name": "aaa",
+        "surname": "bbb",
+        "patronymic": "",
+        "group": "Q1234",
+        "isuId": "989876",
+        "dormitoryNumber": null,
+        "room": null,
+        "moveInDate": null,
+        "foreigner": false,
+        "notes": "",
+        "id": 5
     }
 ]

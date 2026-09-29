@@ -21,72 +21,86 @@ async function errorHandler(response) {
 
                 return `${fieldName}: ${message}`;
             }).join("\n");
-            throw new Error(`Ошибка валидации данных (422):\n${text}`)
+            throw new Error(`Ошибка валидации данных (422):\n${text}`);
         case 409:
-            throw new Error(`Ошибка конфликта данных (409):\n${data.detail}`)
+            throw new Error(`Ошибка конфликта данных (409):\n${data.detail}`);
         case 404:
-            throw new Error(`Ошибка не найдено (404):\n${data.detail}`)
+            throw new Error(`Ошибка не найдено (404):\n${data.detail}`);
         default:
-            throw new Error(`Произошла ошибка (${response.status})`)
+            throw new Error(`Произошла ошибка (${response.status})`);
     }
 }
 
 export async function getAllStudents() {
-    const response = await fetch(apiRoute)
+    try{
+        const response = await fetch(apiRoute)
+        if (!response.ok) {
+            await errorHandler(response);
+        }
 
-    if (!response.ok) {
-        await errorHandler(response);
+        const data = await response.json();
+        return data.students;
+    } catch(error) {
+        throw new Error(`Ошибка при запросе к API`);
     }
-
-    const data = await response.json();
-    return data.students;
 }
 
 export async function getStudentById(id) {
-    const response = await fetch(apiRoute + id);
-
-    if (!response.ok) {
-        await errorHandler(response);
-    }
-
-    const data = await response.json();
-    return data.student;
+    try {
+        const response = await fetch(apiRoute + id);
+        if (!response.ok) {
+            await errorHandler(response);
+        }
+        const data = await response.json();
+        return data.student;
+    } catch(error) {
+        throw new Error(`Ошибка при запросе к API`);
+}
 }
 
 export async function createStudent(student) {
-    const response = await fetch(apiRoute, {
-        method: "POST",
-        body: JSON.stringify(student),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-
-    if (!response.ok) {
-        await errorHandler(response);
+    try{
+        const response = await fetch(apiRoute, {
+            method: "POST",
+            body: JSON.stringify(student),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!response.ok) {
+            await errorHandler(response);
+        }
+    } catch(error) {
+        throw new Error(`Ошибка при запросе к API`);
     }
 }
 
 export async function editStudent(id, changedFields) {
-    const response = await fetch(apiRoute + id, {
-        method: "PATCH",
-        body: JSON.stringify(changedFields),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-
-    if (!response.ok) {
-        await errorHandler(response);
+    try {
+        const response = await fetch(apiRoute + id, {
+            method: "PATCH",
+            body: JSON.stringify(changedFields),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!response.ok) {
+            await errorHandler(response);
+        }
+    } catch(error) {
+        throw new Error(`Ошибка при запросе к API`);
     }
 }
 
 export async function deleteStudent(id) {
-    const response = await fetch(apiRoute + id, {
-        method: "DELETE"
-    });
-
-    if (!response.ok) {
-        await errorHandler(response);
+    try {
+        const response = await fetch(apiRoute + id, {
+            method: "DELETE"
+        });
+        if (!response.ok) {
+            await errorHandler(response);
+        }
+    } catch(error) {
+        throw new Error(`Ошибка при запросе к API`);
     }
 }

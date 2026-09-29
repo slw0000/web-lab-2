@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field, field_validator
 from datetime import date
 from typing import Optional
 from regex import fullmatch
+from typing import Literal
 
 
 fio_pattern = r"\p{L}[\p{L} -`]*\p{L}"
@@ -79,7 +80,35 @@ class StudentPatchSchema(BaseModel):
         return value
 
 
-class StudentFilterSchema(BaseModel):
-    # просто заглушка пока что
-    id: str
-    name: str
+class StudentFilterSchemaGET(BaseModel):
+    name: str | None = None
+    surname: str | None = None
+    patronymic: str | None = None
+
+    group: str | None = None
+    dormitoryNumber: int | None = None
+    room: int | None = None
+
+    foreigner: bool | None = None
+    moveInDateFrom: date | None = None
+    moveInDateTo: date | None = None
+    sortBy: Literal[
+        "id",
+        "name",
+        "surname",
+        "patronymic",
+        "group",
+        "isuId",
+        "dormitoryNumber",
+        "room",
+        "moveInDate",
+        "foreigner",
+        "notes",
+    ] = "id"
+    order: Literal["up", "down"] = "up"
+
+
+class StudentFilterSchemaQUERY(StudentFilterSchemaGET):
+    group: list[str] | None = None
+    dormitoryNumber: list[int] | None = None
+    room: list[int] | None = None

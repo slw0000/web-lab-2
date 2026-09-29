@@ -1,7 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
+from typing import Annotated
 
 from backend.schemas.student import (
-    StudentFilterSchema,
+    StudentFilterSchemaGET,
+    StudentFilterSchemaQUERY,
     StudentInfoSchema,
     StudentPatchSchema,
 )
@@ -17,17 +19,23 @@ from backend.repository.json_crud import (
     update_student,
 )
 
+from backend.services.sort_filter import sort_students, filter_students, get_to_query_schema
+
 
 router = APIRouter(prefix="/api/requests", tags=["requests"])
 
 
 @router.get("/", status_code=200)
-def get_all_students():
+def get_all_students(query_params: Annotated[StudentFilterSchemaGET, Query()]):
     """Get all students list (supports query parametrs as filters and sorts)"""
 
     all_students = get_all_students_json()
+    filtered_students = filter_students(all_students, get_to_query_schema(query_params))
+    sorted_students = sort_students(
+        filtered_students, query_params.sortBy, query_params.order
+    )
 
-    return {"message": "All students list", "students": all_students}
+    return {"message": "All students list", "students": sorted_students}
 
 
 @router.get("/{student_id}", status_code=200)
@@ -80,6 +88,13 @@ def delete_student_by_id(student_id: int):
         )
 
 
-@router.api_route("/", methods=["QUERY"])  # todo
-def filter_students(filter: StudentFilterSchema):
-    return {"message": "Filter and/or sort students"}
+@router.api_route("/", methods=["QUERY"])
+def query_filter(params: StudentFilterSchemaQUERY):
+
+    all_students = get_all_students_json()
+    filtered_students = filter_students(all_students, params)
+    sorted_students = sort_students(
+        filtered_students, params.sortBy, params.order
+    )
+
+    return {"message": "All students list", "students": sorted_students}
