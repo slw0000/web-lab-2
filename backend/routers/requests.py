@@ -23,7 +23,8 @@ router = APIRouter(prefix="/api/requests", tags=["requests"])
 
 @router.get("/", status_code=200)
 def get_all_students():
-    """Get all students list"""
+    """Get all students list (supports query parametrs as filters and sorts)"""
+
     all_students = get_all_students_json()
 
     return {"message": "All students list", "students": all_students}

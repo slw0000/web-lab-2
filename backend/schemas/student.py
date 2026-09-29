@@ -24,15 +24,22 @@ class StudentInfoSchema(BaseModel):
     def clean_and_validate_fio(cls, value):
         if not isinstance(value, str):
             return value
-
         value = value.strip()
-
         if value == "":
             return value
-
         if not fullmatch(fio_pattern, value):
             raise ValueError("Allowed only letters, space and '–'")
+        return value
 
+    @field_validator("moveInDate")
+    @classmethod
+    def validate_date(cls, value):
+        if value is None:
+            return value
+        if value < date(2000, 1, 1):
+            raise ValueError("Date should be later than 2000-01-01")
+        if value > date.today():
+            raise ValueError("Date should be earlier than today")
         return value
 
 
@@ -53,15 +60,22 @@ class StudentPatchSchema(BaseModel):
     def clean_and_validate_fio(cls, value):
         if not isinstance(value, str):
             return value
-
         value = value.strip()
-
         if value == "":
             return value
-
         if not fullmatch(fio_pattern, value):
             raise ValueError("Allowed only letters, space and '–'")
+        return value
 
+    @field_validator("moveInDate")
+    @classmethod
+    def validate_date(cls, value):
+        if value is None:
+            return value
+        if value < date(2000, 1, 1):
+            raise ValueError("Date should be later than 2000-01-01")
+        if value > date.today():
+            raise ValueError("Date should be earlier than today")
         return value
 
 

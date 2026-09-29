@@ -37,5 +37,18 @@
         "foreigner": false,
         "notes": "",
         "id": 3
+    },
+    {
+        "name": "pro",
+        "surname": "noob",
+        "patronymic": "cheater",
+        "group": "Q1234",
+        "isuId": "987654",
+        "dormitoryNumber": 12,
+        "room": 232,
+        "moveInDate": "2000-12-12",
+        "foreigner": true,
+        "notes": "",
+        "id": 4
     }
 ]

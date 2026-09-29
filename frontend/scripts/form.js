@@ -6,6 +6,22 @@ const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id');
 let prevStudent = null;
 
+// Добавляем максимальную дату в форму
+
+const dateInput = document.getElementById("moveInDate");
+const now = new Date();
+
+const today = new Date();
+const date = [
+    String(today.getFullYear()),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0"),
+].join("-");
+
+dateInput.max = date;
+
+
+
 // Подставляем в форму
 
 if (id) {
