@@ -1,4 +1,5 @@
 import { getStudentById, createStudent, editStudent } from "./api.js";
+import { showError } from "./index.js";
 
 console.log("form.js loaded");
 
@@ -49,13 +50,7 @@ if (id) {
         header.appendChild(subtitle)
 
     } catch (error) {
-        let errorContainer = document.querySelector('.error-container');
-        let errorText = errorContainer.querySelector('p');
-
-        errorText.textContent = error.message
-        errorContainer.hidden = false
-
-        console.log(error.message);
+        showError(error);
     };
 }
 
@@ -102,12 +97,6 @@ form.addEventListener('submit', async function(event) {
         window.location.href = 'index.html';
 
     } catch (error) {
-        let errorContainer = document.querySelector('.error-container');
-        let errorText = errorContainer.querySelector('p');
-
-        errorText.textContent = error.message
-        errorContainer.hidden = false
-
-        console.log(error.message);
+        showError(error);
     };
 });

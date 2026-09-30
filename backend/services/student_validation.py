@@ -22,9 +22,7 @@ def check_unique_isuId(isuId: str, student_id: int) -> bool:
     return True
 
 
-def validate_new_student(
-    student_info: StudentInfoSchema, new: bool = True, student_id: int | None = None
-):
+def validate_new_student(student_info: StudentInfoSchema):
     student = student_info.model_dump(mode="json")
 
     student["notes"] = student["notes"].strip()

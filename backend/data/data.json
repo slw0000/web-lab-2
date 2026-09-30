@@ -193,18 +193,5 @@
         "foreigner": false,
         "notes": "",
         "id": 15
-    },
-    {
-        "name": "Никита",
-        "surname": "Павлов",
-        "patronymic": "",
-        "group": "A1212",
-        "isuId": "286515",
-        "dormitoryNumber": 8,
-        "room": 416,
-        "moveInDate": "2026-09-01",
-        "foreigner": false,
-        "notes": "Заселился в этом семестре",
-        "id": 16
     }
 ]

@@ -59,7 +59,6 @@ form.addEventListener('submit', async function(event) {
         limit: pageSize
     }
 
-    
     const params = new URLSearchParams();
     for (const [key, value] of Object.entries(rawParams)) {
         if (value === null || value === undefined || value === "") {
@@ -74,7 +73,6 @@ form.addEventListener('submit', async function(event) {
         Array.isArray(rawParams.room);
 
     currentFilters = queryFilter ? rawParams : params;
-    
     loadPage(1);
 });
 
@@ -154,13 +152,7 @@ deleteButton.onclick = async function() {
             await loadPage(currentPage);
         }
     } catch (error) {
-        let errorContainer = document.querySelector('.error-container');
-        let errorText = errorContainer.querySelector('p');
-
-        errorText.textContent = error.message
-        errorContainer.hidden = false
-
-        console.log(error.message);
+        showError(error);
     }
 };
 
@@ -199,13 +191,7 @@ async function updateTable(students) {
         document.querySelector('.info-button').disabled = true;
         document.querySelector('.delete-button').disabled = true;
     } catch (error) {
-        let errorContainer = document.querySelector('.error-container');
-        let errorText = errorContainer.querySelector('p');
-
-        errorText.textContent = error.message
-        errorContainer.hidden = false
-
-        console.log(error.message);
+        showError(error);
     }
 };
 
@@ -214,31 +200,51 @@ async function updateTable(students) {
 async function loadPage(page) {
     if (page < 1) return;
 
-    currentPage = page;
-    let result;
+    try {
+        currentPage = page;
+        let result;
 
-    if (queryFilter) {
-        result = await getAllStudentsQuery({
-            ...currentFilters,
-            page: currentPage,
-            limit: pageSize,
-        });
-    } else {
-        const params = new URLSearchParams(currentFilters);
-        params.set("page", String(currentPage));
-        params.set("limit", String(pageSize));
+        if (queryFilter) {
+            result = await getAllStudentsQuery({
+                ...currentFilters,
+                page: currentPage,
+                limit: pageSize,
+            });
+        } else {
+            const params = new URLSearchParams(currentFilters);
+            params.set("page", String(currentPage));
+            params.set("limit", String(pageSize));
 
-        result = await getAllStudentsFiltered(params);
+            result = await getAllStudentsFiltered(params);
+        }
+
+
+        totalPages = result.total_pages;
+        if (totalPages < page) {
+            loadPage(page - 1)
+            return
+        }
+
+        updateTable(result.students);
+
+        pageInfo.textContent =
+            `Страница ${totalPages === 0 ? 0 : currentPage} из ${totalPages}`;
+
+        backButton.disabled = currentPage <= 1;
+        forwButton.disabled = currentPage >= totalPages;
+    } catch(error) {
+        showError(error);
     }
-
-    totalPages = result.total_pages;
-    updateTable(result.students);
-
-    pageInfo.textContent =
-        `Страница ${totalPages === 0 ? 0 : currentPage} из ${totalPages}`;
-
-    backButton.disabled = currentPage <= 1;
-    forwButton.disabled = currentPage >= totalPages;
 };
+
+// Функция которая показывает ошибки на странице (чтобы не повторяться)
+
+export function showError(error) {
+    const errorContainer = document.querySelector(".error-container");
+    const errorText = errorContainer.querySelector("p");
+
+    errorText.textContent = error.message || "Не удалось загрузить студентов";
+    errorContainer.hidden = false;
+}
 
 

@@ -28,11 +28,11 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     details = []
     for error in exc.errors():
         er = {
-                "field": ".".join(
-                    str(part) for part in error["loc"] if part not in ("body", "query")
-                ),
-                "message": error["msg"],
-            }
+            "field": ".".join(
+                str(part) for part in error["loc"] if part not in ("body", "query")
+            ),
+            "message": error["msg"],
+        }
 
         details.append(er)
 
@@ -44,10 +44,9 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         },
     )
 
+
 @app.exception_handler(HTTPException)
-async def http_exception_handler(
-    request: Request, exc: HTTPException
-):
+async def http_exception_handler(request: Request, exc: HTTPException):
     return JSONResponse(
         status_code=exc.status_code,
         content={
@@ -59,9 +58,7 @@ async def http_exception_handler(
 
 
 @app.exception_handler(Exception)
-async def unexpected_exception_handler(
-    request: Request, exc: Exception
-):
+async def unexpected_exception_handler(request: Request, exc: Exception):
     return JSONResponse(
         status_code=500,
         content={
