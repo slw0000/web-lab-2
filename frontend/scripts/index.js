@@ -1,4 +1,5 @@
 import { getAllStudentsFiltered, getAllStudentsQuery, deleteStudent } from "./api.js"
+import { showError } from "./errors.js";
 
 console.log('index.js loaded');
 
@@ -236,15 +237,5 @@ async function loadPage(page) {
         showError(error);
     }
 };
-
-// Функция которая показывает ошибки на странице (чтобы не повторяться)
-
-export function showError(error) {
-    const errorContainer = document.querySelector(".error-container");
-    const errorText = errorContainer.querySelector("p");
-
-    errorText.textContent = error.message || "Не удалось загрузить студентов";
-    errorContainer.hidden = false;
-}
 
 

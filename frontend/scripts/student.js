@@ -1,5 +1,5 @@
 import { getStudentById } from "./api.js";
-import { showError } from "./index.js";
+import { showError } from "./errors.js";
 
 console.log("student.js loaded");
 

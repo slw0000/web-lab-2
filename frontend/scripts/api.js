@@ -28,6 +28,10 @@ async function errorHandler(response) {
             throw new Error(`Ошибка конфликта данных (409):\n${data.message}`);
         case 404:
             throw new Error(`Ошибка не найдено (404):\n${data.message}`);
+        case 400:
+            throw new Error(`Ошибка при запросе (400):\n${data.message}`);
+        case 500:
+            throw new Error(`Ошибка на сервере (500):\n${data.message}`);
         default:
             throw new Error(`Произошла ошибка (${response.status})`);
     }
