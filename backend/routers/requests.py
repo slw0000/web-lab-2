@@ -43,7 +43,9 @@ def get_all_students(query_params: Annotated[StudentFilterSchemaGET, Query()]):
 
     students_count = len(filtered_students)
     paged_students = pagination(sorted_students, query_params.page, query_params.limit)
-    total_pages = ceil(students_count / query_params.limit) if query_params.limit else None
+    total_pages = (
+        ceil(students_count / query_params.limit) if query_params.limit else None
+    )
 
     return {
         "message": "All students list",
@@ -112,12 +114,10 @@ def query_filter(params: StudentFilterSchemaQUERY):
     filtered_students = filter_students(all_students, params)
     sorted_students = sort_students(filtered_students, params.sortBy, params.order)
 
-    paged_students = pagination(sorted_students, params.page, params.limit)
-
     students_count = len(filtered_students)
     paged_students = pagination(sorted_students, params.page, params.limit)
     total_pages = ceil(students_count / params.limit) if params.limit else None
-    
+
     return {
         "message": "All students list",
         "students_count": len(sorted_students),

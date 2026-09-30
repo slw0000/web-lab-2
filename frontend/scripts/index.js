@@ -59,6 +59,7 @@ form.addEventListener('submit', async function(event) {
         limit: pageSize
     }
 
+    
     const params = new URLSearchParams();
     for (const [key, value] of Object.entries(rawParams)) {
         if (value === null || value === undefined || value === "") {

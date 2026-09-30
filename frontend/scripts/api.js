@@ -13,19 +13,21 @@ async function errorHandler(response) {
                 isuId: "ИСУ ID",
             };
 
+            let details = [];
+            if (Array.isArray(data?.details)) {
+                details = data.details.map(error => {
+                    const field = error.field?.split(".").at(-1);
+                    const fieldName = fieldNames[field] ?? field ?? "Данные";
+                    return `${fieldName}: ${error.message}`;
+                })
+            }
 
-            const text = data.detail.map(error => {
-                const field = error.loc?.[error.loc.length - 1];
-                const fieldName = fieldNames[field] ?? field ?? "Данные";
-                const message = error.msg;
-
-                return `${fieldName}: ${message}`;
-            }).join("\n");
-            throw new Error(`Ошибка валидации данных (422):\n${text}`);
+            const message = data?.message ?? `Произошла ошибка (${response.status})`;
+            throw new Error([message, ...details].join("\n"));
         case 409:
-            throw new Error(`Ошибка конфликта данных (409):\n${data.detail}`);
+            throw new Error(`Ошибка конфликта данных (409):\n${data.message}`);
         case 404:
-            throw new Error(`Ошибка не найдено (404):\n${data.detail}`);
+            throw new Error(`Ошибка не найдено (404):\n${data.message}`);
         default:
             throw new Error(`Произошла ошибка (${response.status})`);
     }
