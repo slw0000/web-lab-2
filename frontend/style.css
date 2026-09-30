@@ -1,9 +1,9 @@
 :root {
     --color-current-student-box: #7abfff;
-
     --color-error-container: #FFCCCC;
     --color-error-container-border: rgb(230, 68, 68);
 
+    --color-table-main-back: #fff;
     --color-table-background: #efefef;
     --color-table-selected-row: #DEE2E6;
 
@@ -11,14 +11,16 @@
     --color-button-delete: rgb(230, 68, 68);
     --color-button-default: rgb(68, 82, 230);
     --color-button-disable: #ddd;
-
     --color-button-font-default: white;
     --color-button-font-disable: #777;
 
     --color-student-info-back: #efefef;
     --color-student-info-border: rgb(151, 151, 151);
 
-    --color-select-default: #ddd;
+    --color-header-background: rgb(255 255 255 / 80%);
+    --color-page-info-background: rgb(255 255 255 / 80%);
+
+    --color-filter-sort-panel: #f3f3f3;
 }
 
 /* 
@@ -61,7 +63,7 @@ h1 {
     width: fit-content;
     margin: 0.5rem auto 1.5rem;
     padding: 0.25em 0.7em;
-    background: rgb(255 255 255 / 80%);
+    background: var(--color-header-background);
     border-radius: 0.5rem;
 }
 
@@ -112,7 +114,7 @@ a {
 .table td {
 	border: 1px solid black;
 	padding: 0.3125rem;
-    background-color: #fff;
+    background-color: var(--color-table-main-back);
 }
 
 .table .selected td {
@@ -129,15 +131,9 @@ a {
     max-width: 70rem;
     margin: 1rem auto 1.5rem;
     padding: 1rem;
-    background: #f3f3f3;
+    background: var(--color-filter-sort-panel);
     border: 1px solid #ccc;
     border-radius: 0.75rem;
-}
-
-.filter-fields {
-    gap: 1rem;
-    border: 0;
-    padding: 0;
 }
 
 .filter-fields {
@@ -173,6 +169,7 @@ legend {
 .filter-field select {
     box-sizing: border-box;
     width: 100%;
+    min-width: 0;
     min-height: 2.5rem;
     padding: 0.4rem 0.6rem;
     border: 1px solid #888;
@@ -205,7 +202,7 @@ legend {
     padding: 0.75rem 1rem;
     border: 1px solid #aaa;
     border-radius: 0.5rem;
-    background-color: #f3f3f3;
+    background-color: var(--color-filter-sort-panel);
     font-weight: 600;
     cursor: pointer;
     list-style: none;
@@ -224,14 +221,6 @@ legend {
     content: "−";
 }
 
-.filter-panel[open] .sort-from-container {
-    margin-top: 0.75rem;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
-    background-color: #f8f8f8;
-}
-
 /* Блок навигации по странцам таблицы */
 
 .pagination {
@@ -245,7 +234,7 @@ legend {
 #page-info {
     font-weight: 600;
     padding: 0.25em 0.7em;
-    background: rgb(255 255 255 / 80%);
+    background: var(--color-page-info-background);
     border-radius: 0.5rem;
 }
 
@@ -397,8 +386,7 @@ textarea {
         flex-direction: column;
     }
 
-    .sort-controls select,
-    .sort-controls .sort-button {
+    .sort-controls select {
         width: 100%;
     }
 }
