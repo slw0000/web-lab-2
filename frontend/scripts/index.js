@@ -1,11 +1,23 @@
-import { getAllStudents, getAllStudentsFiltered, getAllStudentsQuery, deleteStudent } from "./api.js"
+import { getAllStudentsFiltered, getAllStudentsQuery, deleteStudent } from "./api.js"
 
 console.log('index.js loaded');
 
-const students = await getAllStudents()
-updateTable(students);
+// Обновление страницы и переменные для фильтрации при открытии
 
-// Подключение кнопок сортировки и фильтрации
+let currentFilters = new URLSearchParams();
+let queryFilter = false;
+let currentPage = 1;
+const pageSize = 5;
+let totalPages = 0;
+
+const pageInfo = document.getElementById("page-info");
+const backButton = document.getElementById("prev-page");
+const forwButton = document.getElementById("next-page");
+
+await loadPage(1);
+
+
+// парсер параметров группы, общаги и комнаты
 
 function parseParams(str) {
   const numbers = str.split(',').map(item => item.trim())
@@ -20,10 +32,14 @@ function parseParams(str) {
   return numbers;
 }
 
+
+// Подключение кнопки применения и сброса фильтров
+
 const form = document.getElementById('students-query-form')
 
 form.addEventListener('submit', async function(event) {
     event.preventDefault();
+    currentPage = 1;
 
     const formData = new FormData(form);
     const foreignerValue = formData.get("foreigner");
@@ -38,7 +54,9 @@ form.addEventListener('submit', async function(event) {
         moveInDateTo: formData.get('moveInDateTo') || null,
         foreigner: foreignerValue === "" ? null : foreignerValue === "true",
         sortBy: formData.get("sortBy"),
-        order: formData.get("order")
+        order: formData.get("order"),
+        page: currentPage,
+        limit: pageSize
     }
 
     const params = new URLSearchParams();
@@ -49,24 +67,31 @@ form.addEventListener('submit', async function(event) {
         params.set(key, String(value));
     }
 
-    const hasMultipleValues =
+    queryFilter =
         Array.isArray(rawParams.group) ||
         Array.isArray(rawParams.dormitoryNumber) ||
         Array.isArray(rawParams.room);
 
-    let filtStudents;
-    if (hasMultipleValues) {
-        filtStudents = await getAllStudentsQuery(rawParams);
-    } else {
-        filtStudents = await getAllStudentsFiltered(params);
-    }
-    updateTable(filtStudents);
+    currentFilters = queryFilter ? rawParams : params;
+    
+    loadPage(1);
 });
 
+
+
 form.addEventListener('reset', async function(event) {
-    const students = await getAllStudents();
-    updateTable(students);
+    currentFilters = new URLSearchParams();
+    queryFilter = false;
+    currentPage = 1;
+    currentFilters = {};
+    loadPage(1);
 });
+
+// Подключение кнопок вперед и назад
+
+backButton.addEventListener("click", () => loadPage(currentPage - 1));
+forwButton.addEventListener("click", () => loadPage(currentPage + 1));
+
 
 // Добавление логики клика по строке таблицы 
 
@@ -97,7 +122,7 @@ element.onclick = function(event) {
     }
 }; 
 
-// Подключение ссылок к кнопкам кнопок
+// Подключение ссылок к кнопкам
 
 const editButton = document.querySelector('.edit-button');
 editButton.onclick = function() {
@@ -125,8 +150,7 @@ deleteButton.onclick = async function() {
         if (selectedRow) {
             let id = selectedRow.id;
             await deleteStudent(id);
-            const students = await getAllStudents()
-            await updateTable(students);
+            await loadPage(currentPage);
         }
     } catch (error) {
         let errorContainer = document.querySelector('.error-container');
@@ -182,6 +206,38 @@ async function updateTable(students) {
 
         console.log(error.message);
     }
+};
+
+// Функция загрузки страницы
+
+async function loadPage(page) {
+    if (page < 1) return;
+
+    currentPage = page;
+    let result;
+
+    if (queryFilter) {
+        result = await getAllStudentsQuery({
+            ...currentFilters,
+            page: currentPage,
+            limit: pageSize,
+        });
+    } else {
+        const params = new URLSearchParams(currentFilters);
+        params.set("page", String(currentPage));
+        params.set("limit", String(pageSize));
+
+        result = await getAllStudentsFiltered(params);
+    }
+
+    totalPages = result.total_pages;
+    updateTable(result.students);
+
+    pageInfo.textContent =
+        `Страница ${totalPages === 0 ? 0 : currentPage} из ${totalPages}`;
+
+    backButton.disabled = currentPage <= 1;
+    forwButton.disabled = currentPage >= totalPages;
 };
 
 

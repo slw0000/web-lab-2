@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
 from typing import Annotated
+from math import ceil
 
 from backend.schemas.student import (
     StudentFilterSchemaGET,
@@ -19,7 +20,12 @@ from backend.repository.json_crud import (
     update_student,
 )
 
-from backend.services.sort_filter import sort_students, filter_students, get_to_query_schema
+from backend.services.sort_filter import (
+    sort_students,
+    filter_students,
+    get_to_query_schema,
+    pagination,
+)
 
 
 router = APIRouter(prefix="/api/requests", tags=["requests"])
@@ -35,7 +41,18 @@ def get_all_students(query_params: Annotated[StudentFilterSchemaGET, Query()]):
         filtered_students, query_params.sortBy, query_params.order
     )
 
-    return {"message": "All students list", "students": sorted_students}
+    students_count = len(filtered_students)
+    paged_students = pagination(sorted_students, query_params.page, query_params.limit)
+    total_pages = ceil(students_count / query_params.limit) if query_params.limit else None
+
+    return {
+        "message": "All students list",
+        "students_count": len(sorted_students),
+        "total_pages": total_pages,
+        "page": query_params.page,
+        "limit": query_params.limit,
+        "students": paged_students,
+    }
 
 
 @router.get("/{student_id}", status_code=200)
@@ -93,8 +110,19 @@ def query_filter(params: StudentFilterSchemaQUERY):
 
     all_students = get_all_students_json()
     filtered_students = filter_students(all_students, params)
-    sorted_students = sort_students(
-        filtered_students, params.sortBy, params.order
-    )
+    sorted_students = sort_students(filtered_students, params.sortBy, params.order)
 
-    return {"message": "All students list", "students": sorted_students}
+    paged_students = pagination(sorted_students, params.page, params.limit)
+
+    students_count = len(filtered_students)
+    paged_students = pagination(sorted_students, params.page, params.limit)
+    total_pages = ceil(students_count / params.limit) if params.limit else None
+    
+    return {
+        "message": "All students list",
+        "students_count": len(sorted_students),
+        "total_pages": total_pages,
+        "page": params.page,
+        "limit": params.limit,
+        "students": paged_students,
+    }

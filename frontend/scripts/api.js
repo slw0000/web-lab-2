@@ -31,23 +31,7 @@ async function errorHandler(response) {
     }
 }
 
-export async function getAllStudents() {
-    let response;
-    try{
-        response = await fetch(apiRoute)
-    } catch(error) {
-        throw new Error(`Ошибка при запросе к API`);
-    }
-
-    if (!response.ok) {
-        await errorHandler(response);
-    }
-
-    const data = await response.json();
-    return data.students; 
-}
-
-export async function getAllStudentsFiltered(params = {}) {
+export async function getAllStudentsFiltered(params) {
     let response;
     try{
         response = await fetch(apiRoute + "?" + params);
@@ -60,7 +44,11 @@ export async function getAllStudentsFiltered(params = {}) {
     }
 
     const data = await response.json();
-    return data.students; 
+    return {
+        students: data.students,
+        total_pages: data.total_pages,
+        studentsCount: data.students_count
+    }
 }
 
 export async function getAllStudentsQuery(params) {
@@ -78,7 +66,11 @@ export async function getAllStudentsQuery(params) {
     if (!response.ok) await errorHandler(response);
 
     const data = await response.json();
-    return data.students;
+    return {
+        students: data.students,
+        total_pages: data.total_pages,
+        studentsCount: data.students_count
+    }
 }
 
 export async function getStudentById(id) {

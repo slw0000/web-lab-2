@@ -21,25 +21,23 @@
     --color-select-default: #ddd;
 }
 
-/* Красивый фон взял с сайта ;P */
+/* 
+Красивый фон взял с сайта ;P 
+https://css-pattern.com/distorted-mesh/
+*/
 html {
-    /* https://css-pattern.com/overlapping-circles/ */
-
-    --s: 40px; /* control the size*/
-    --c1: #ffe2d6;
-    --c2: #d6d6d6;
+  --s: 101px; /* control the size*/
+  --c1: #ffc677;
+  --c2: #ffe4a8;
   
-    --_g: 
-        var(--c1) 0%  5% ,var(--c2) 6%  15%,var(--c1) 16% 25%,var(--c2) 26% 35%,var(--c1) 36% 45%,
-        var(--c2) 46% 55%,var(--c1) 56% 65%,var(--c2) 66% 75%,var(--c1) 76% 85%,var(--c2) 86% 95%,
-        #0000 96%;
-    background:
-        radial-gradient(50% 50% at 100% 0,var(--_g)),
-        radial-gradient(50% 50% at 0 100%,var(--_g)),
-        radial-gradient(50% 50%,var(--_g)),
-        radial-gradient(50% 50%,var(--_g)) calc(var(--s)/2) calc(var(--s)/2)
-        var(--c1);
-    background-size: var(--s) var(--s);
+  --_g: #0000 52%,var(--c1) 54% 57%,#0000 59%; 
+  background: 
+   radial-gradient(farthest-side at -33.33% 50%,var(--_g)) 0 calc(var(--s)/2),
+   radial-gradient(farthest-side at 50% 133.33%,var(--_g)) calc(var(--s)/2) 0,
+   radial-gradient(farthest-side at 133.33% 50%,var(--_g)),
+   radial-gradient(farthest-side at 50% -33.33%,var(--_g)),
+   var(--c2);
+  background-size: calc(var(--s)/4.667) var(--s),var(--s) calc(var(--s)/4.667);
 }
 
 * {
@@ -57,6 +55,14 @@ input,
 textarea,
 select {
     font: inherit;
+}
+
+h1 {
+    width: fit-content;
+    margin: 0.5rem auto 1.5rem;
+    padding: 0.25em 0.7em;
+    background: rgb(255 255 255 / 80%);
+    border-radius: 0.5rem;
 }
 
 h1, 
@@ -129,23 +135,38 @@ a {
 }
 
 .filter-fields {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     gap: 1rem;
     border: 0;
     padding: 0;
 }
 
-.filter-fields legend {
+.filter-fields {
     margin-bottom: 0.75rem;
+    padding: 0;
+    border: 0;
     font-size: 1.2rem;
     font-weight: 700;
+}
+
+legend {
+    text-align: center;
+    font-size: 1.5rem;
+    padding-bottom: 0.75rem;
 }
 
 .filter-field {
     display: grid;
     gap: 0.35rem;
     font-weight: 600;
+}
+
+.filter-block {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ccc;
 }
 
 .filter-field input,
@@ -209,6 +230,23 @@ a {
     border: 1px solid #ccc;
     border-radius: 0.5rem;
     background-color: #f8f8f8;
+}
+
+/* Блок навигации по странцам таблицы */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem auto;
+}
+
+#page-info {
+    font-weight: 600;
+    padding: 0.25em 0.7em;
+    background: rgb(255 255 255 / 80%);
+    border-radius: 0.5rem;
 }
 
 /* Общее оформление кнопок для всех страниц */
@@ -282,6 +320,7 @@ a {
 }
 
 /* Оформление формы добавления студента */
+
 .form-row {
     display: grid;
     margin-bottom: 0.9375rem;

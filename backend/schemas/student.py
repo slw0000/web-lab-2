@@ -81,17 +81,18 @@ class StudentPatchSchema(BaseModel):
 
 
 class StudentFilterSchemaGET(BaseModel):
-    name: str | None = None
-    surname: str | None = None
-    patronymic: str | None = None
+    name: Optional[str] = None
+    surname: Optional[str] = None
+    patronymic: Optional[str] = None
 
-    group: str | None = None
-    dormitoryNumber: int | None = None
-    room: int | None = None
+    group: Optional[str] = None
+    dormitoryNumber: Optional[int] = None
+    room: Optional[int] = None
 
-    foreigner: bool | None = None
-    moveInDateFrom: date | None = None
-    moveInDateTo: date | None = None
+    foreigner: Optional[bool] = None
+    moveInDateFrom: Optional[date] = None
+    moveInDateTo: Optional[date] = None
+
     sortBy: Literal[
         "id",
         "name",
@@ -106,6 +107,9 @@ class StudentFilterSchemaGET(BaseModel):
         "notes",
     ] = "id"
     order: Literal["up", "down"] = "up"
+
+    page: Optional[int] = None
+    limit: Optional[int] = None
 
 
 class StudentFilterSchemaQUERY(StudentFilterSchemaGET):
