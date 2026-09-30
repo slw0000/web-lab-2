@@ -1,8 +1,72 @@
-import { getAllStudents, deleteStudent } from "./api.js"
+import { getAllStudents, getAllStudentsFiltered, getAllStudentsQuery, deleteStudent } from "./api.js"
 
 console.log('index.js loaded');
 
-updateTable();
+const students = await getAllStudents()
+updateTable(students);
+
+// Подключение кнопок сортировки и фильтрации
+
+function parseParams(str) {
+  const numbers = str.split(',').map(item => item.trim())
+    .filter(item => item !== "");
+
+  if (numbers.length === 0) {
+    return null; 
+  } 
+  if (numbers.length === 1) {
+    return numbers[0];
+  }
+  return numbers;
+}
+
+const form = document.getElementById('students-query-form')
+
+form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const foreignerValue = formData.get("foreigner");
+    let rawParams = {
+        surname: formData.get('surname') || null,
+        name: formData.get('name') || null,
+        patronymic: formData.get('patronymic') || null,
+        group: parseParams(formData.get('group')) || null,
+        dormitoryNumber: parseParams(formData.get('dormitoryNumber')) || null,
+        room: parseParams(formData.get('room')) || null,
+        moveInDateFrom: formData.get('moveInDateFrom') || null,
+        moveInDateTo: formData.get('moveInDateTo') || null,
+        foreigner: foreignerValue === "" ? null : foreignerValue === "true",
+        sortBy: formData.get("sortBy"),
+        order: formData.get("order")
+    }
+
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(rawParams)) {
+        if (value === null || value === undefined || value === "") {
+            continue;
+        }
+        params.set(key, String(value));
+    }
+
+    const hasMultipleValues =
+        Array.isArray(rawParams.group) ||
+        Array.isArray(rawParams.dormitoryNumber) ||
+        Array.isArray(rawParams.room);
+
+    let filtStudents;
+    if (hasMultipleValues) {
+        filtStudents = await getAllStudentsQuery(rawParams);
+    } else {
+        filtStudents = await getAllStudentsFiltered(params);
+    }
+    updateTable(filtStudents);
+});
+
+form.addEventListener('reset', async function(event) {
+    const students = await getAllStudents();
+    updateTable(students);
+});
 
 // Добавление логики клика по строке таблицы 
 
@@ -61,7 +125,8 @@ deleteButton.onclick = async function() {
         if (selectedRow) {
             let id = selectedRow.id;
             await deleteStudent(id);
-            await updateTable();
+            const students = await getAllStudents()
+            await updateTable(students);
         }
     } catch (error) {
         let errorContainer = document.querySelector('.error-container');
@@ -76,10 +141,8 @@ deleteButton.onclick = async function() {
 
 // функция обновления таблицы
 
-async function updateTable() {
+async function updateTable(students) {
     try {
-        const students = await getAllStudents()
-
         const tableBody = document.getElementById('table-body');
         tableBody.innerHTML = '';
         let id = 0;

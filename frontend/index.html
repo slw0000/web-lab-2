@@ -15,6 +15,93 @@
         <div class="error-container" hidden>
             <p id="error-message"></p>
         </div>
+        
+        <details class="filter-panel">
+        <summary class="filter-panel__toggle">Фильтры и сортировка</summary>
+            <form id="students-query-form" class="query-panel">
+            <fieldset class="filter-fields">
+                <legend>Фильтры студентов</legend>
+
+                <label class="filter-field">
+                    <span>Фамилия</span>
+                    <input type="search" name="surname" placeholder="Например, Иванов">
+                </label>
+
+                <label class="filter-field">
+                    <span>Имя</span>
+                    <input type="search" name="name" placeholder="Например, Иван">
+                </label>
+
+                <label class="filter-field">
+                    <span>Отчество</span>
+                    <input type="search" name="patronymic" placeholder="Например, Иванович">
+                </label>
+
+                <label class="filter-field">
+                    <span>Группы — через запятую</span>
+                    <input type="text" name="group" placeholder="Q1234, Q1235">
+                </label>
+
+                <label class="filter-field">
+                    <span>Общежития — через запятую</span>
+                    <input type="text" name="dormitoryNumber" inputmode="numeric" placeholder="8, 9">
+                </label>
+
+                <label class="filter-field">
+                    <span>Комнаты — через запятую</span>
+                    <input type="text" name="room" inputmode="numeric" placeholder="415, 416">
+                </label>
+
+                <label class="filter-field">
+                    <span>Дата заселения от</span>
+                    <input type="date" name="moveInDateFrom">
+                </label>
+
+                <label class="filter-field">
+                    <span>Дата заселения до</span>
+                    <input type="date" name="moveInDateTo">
+                </label>
+
+                <label class="filter-field">
+                    <span>Иностранец</span>
+                    <select name="foreigner">
+                        <option value="">Любой</option>
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                </label>
+            </fieldset>
+
+            <div class="sort-controls">
+                <label class="filter-field">
+                    <span>Сортировать по</span>
+                    <select id="sortBy" name="sortBy">
+                        <option value="id" selected>Номеру</option>
+                        <option value="surname">Фамилии</option>
+                        <option value="name">Имени</option>
+                        <option value="patronymic">Отчеству</option>
+                        <option value="group">Группе</option>
+                        <option value="isuId">ИСУ ID</option>
+                        <option value="dormitoryNumber">Общежитию</option>
+                        <option value="room">Комнате</option>
+                        <option value="moveInDate">Дате заселения</option>
+                    </select>
+                </label>
+
+                <label class="filter-field">
+                    <span>Порядок</span>
+                    <select id="sort-order" name="order">
+                        <option value="up">По возрастанию</option>
+                        <option value="down">По убыванию</option>
+                    </select>
+                </label>
+
+                <button type="submit" class="buttons">Применить</button>
+                <button type="reset" class="buttons">Сбросить</button>
+            </div>
+            </form>
+        </details>
+
         <div class="table-container">
             <table class="table">
                 <caption id="title-for-blind">Таблица зарегестрированных студентов</caption>

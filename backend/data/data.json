@@ -21,7 +21,7 @@
         "dormitoryNumber": null,
         "room": null,
         "moveInDate": null,
-        "foreigner": false,
+        "foreigner": true,
         "notes": "",
         "id": 2
     },

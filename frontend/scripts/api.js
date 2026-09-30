@@ -44,8 +44,41 @@ export async function getAllStudents() {
     }
 
     const data = await response.json();
+    return data.students; 
+}
+
+export async function getAllStudentsFiltered(params = {}) {
+    let response;
+    try{
+        response = await fetch(apiRoute + "?" + params);
+    } catch(error) {
+        throw new Error(`Ошибка при запросе к API`);
+    }
+
+    if (!response.ok) {
+        await errorHandler(response);
+    }
+
+    const data = await response.json();
+    return data.students; 
+}
+
+export async function getAllStudentsQuery(params) {
+    let response;
+    try {
+        response = await fetch(apiRoute, {
+            method: "QUERY",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(params),
+        });
+    } catch(error) {
+        throw new Error(`Ошибка при запросе к API`)
+    }
+
+    if (!response.ok) await errorHandler(response);
+
+    const data = await response.json();
     return data.students;
-    
 }
 
 export async function getStudentById(id) {

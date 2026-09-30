@@ -17,17 +17,39 @@
 
     --color-student-info-back: #efefef;
     --color-student-info-border: rgb(151, 151, 151);
+
+    --color-select-default: #ddd;
 }
 
+/* Красивый фон взял с сайта ;P */
+html {
+    /* https://css-pattern.com/overlapping-circles/ */
+
+    --s: 40px; /* control the size*/
+    --c1: #ffe2d6;
+    --c2: #d6d6d6;
+  
+    --_g: 
+        var(--c1) 0%  5% ,var(--c2) 6%  15%,var(--c1) 16% 25%,var(--c2) 26% 35%,var(--c1) 36% 45%,
+        var(--c2) 46% 55%,var(--c1) 56% 65%,var(--c2) 66% 75%,var(--c1) 76% 85%,var(--c2) 86% 95%,
+        #0000 96%;
+    background:
+        radial-gradient(50% 50% at 100% 0,var(--_g)),
+        radial-gradient(50% 50% at 0 100%,var(--_g)),
+        radial-gradient(50% 50%,var(--_g)),
+        radial-gradient(50% 50%,var(--_g)) calc(var(--s)/2) calc(var(--s)/2)
+        var(--c1);
+    background-size: var(--s) var(--s);
+}
 
 * {
     box-sizing: border-box;
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 400;
-  font-size: 1.125rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 1.125rem;
 }
 
 button,
@@ -71,7 +93,7 @@ a {
 
 .table {
 	width: 100%;
-	border-collapse: collapse; 
+	border-collapse: collapse;
 }
 
 .table th {
@@ -84,14 +106,109 @@ a {
 .table td {
 	border: 1px solid black;
 	padding: 0.3125rem;
+    background-color: #fff;
 }
 
-.selected {
+.table .selected td {
     background-color: var(--color-table-selected-row);
 }
 
 #title-for-blind {
     visibility: hidden;
+}
+
+/* Оформление блока сортировки */
+
+.query-panel {
+    max-width: 70rem;
+    margin: 1rem auto 1.5rem;
+    padding: 1rem;
+    background: #f3f3f3;
+    border: 1px solid #ccc;
+    border-radius: 0.75rem;
+}
+
+.filter-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1rem;
+    border: 0;
+    padding: 0;
+}
+
+.filter-fields legend {
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.filter-field {
+    display: grid;
+    gap: 0.35rem;
+    font-weight: 600;
+}
+
+.filter-field input,
+.filter-field select {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #888;
+    border-radius: 0.4rem;
+    font: inherit;
+    font-weight: 400;
+}
+
+.sort-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 0.75rem 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ccc;
+}
+
+/* Скрытие блока сортировки и фильтрации */
+
+.filter-panel {
+    max-width: 70rem;
+    margin: 1rem auto 1.5rem;
+}
+
+.filter-panel__toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border: 1px solid #aaa;
+    border-radius: 0.5rem;
+    background-color: #f3f3f3;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+}
+
+.filter-panel__toggle::-webkit-details-marker {
+    display: none;
+}
+
+.filter-panel__toggle::after {
+    content: "+";
+    font-size: 1.3rem;
+}
+
+.filter-panel[open] .filter-panel__toggle::after {
+    content: "−";
+}
+
+.filter-panel[open] .sort-from-container {
+    margin-top: 0.75rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    background-color: #f8f8f8;
 }
 
 /* Общее оформление кнопок для всех страниц */
@@ -231,6 +348,19 @@ textarea {
     .student-card,
     .table-container {
         max-width: 90rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .sort-controls {
+        width: 100%;
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .sort-controls select,
+    .sort-controls .sort-button {
+        width: 100%;
     }
 }
 
