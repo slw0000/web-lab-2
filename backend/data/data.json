@@ -2,11 +2,11 @@
     {
         "name": "Иван",
         "surname": "Иванов",
-        "patronymic": "лох",
+        "patronymic": "",
         "group": "Q1234",
         "isuId": "123456",
-        "dormitoryNumber": null,
-        "room": null,
+        "dormitoryNumber": 31,
+        "room": 12,
         "moveInDate": null,
         "foreigner": false,
         "notes": "",
@@ -21,7 +21,7 @@
         "dormitoryNumber": 8,
         "room": 415,
         "moveInDate": "2024-09-01",
-        "foreigner": false,
+        "foreigner": true,
         "notes": "Первый курс",
         "id": 2
     },

@@ -18,6 +18,7 @@ from backend.repository.json_crud import (
     get_all_students_json,
     get_student_by_id,
     update_student,
+    lock
 )
 
 from backend.services.sort_filter import (
@@ -72,8 +73,10 @@ def get_student(student_id: int):
 @router.post("/", status_code=201)
 def add_new_student(student_info: StudentInfoSchema):
     """Add new student"""
-    validated_student = validate_new_student(student_info)
-    student_id = add_student_json(validated_student)
+
+    with lock:
+        validated_student = validate_new_student(student_info)
+        student_id = add_student_json(validated_student)
 
     return {
         "message": "Student was added succesfully",
@@ -85,8 +88,10 @@ def add_new_student(student_info: StudentInfoSchema):
 @router.patch("/{student_id}", status_code=200)
 def edit_student_by_id(student_id: int, student_info: StudentPatchSchema):
     """Patch some students values"""
-    validated_student = validate_patched_student(student_info, student_id=student_id)
-    status = update_student(student_id, validated_student)
+
+    with lock:
+        validated_student = validate_patched_student(student_info, student_id=student_id)
+        status = update_student(student_id, validated_student)
 
     if status:
         return {"message": f"Student with id={student_id} updated succesfully"}
