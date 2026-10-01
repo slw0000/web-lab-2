@@ -8,7 +8,7 @@ console.log('index.js loaded');
 let currentFilters = new URLSearchParams();
 let queryFilter = false;
 let currentPage = 1;
-const pageSize = 5;
+const pageSize = 10;
 let totalPages = 0;
 
 const pageInfo = document.getElementById("page-info");
@@ -221,7 +221,16 @@ async function loadPage(page) {
 
 
         totalPages = result.total_pages;
-        if (totalPages < page) {
+        
+        if (totalPages === 0) {
+            await updateTable([]);
+            pageInfo.textContent = "Страница 0 из 0";
+            backButton.disabled = true;
+            forwButton.disabled = true;
+            return;
+        }
+
+        if (page > totalPages) {
             loadPage(page - 1)
             return
         }

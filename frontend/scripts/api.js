@@ -12,6 +12,9 @@ async function errorHandler(response) {
                 surname: "Фамилия",
                 group: "Группа",
                 isuId: "ИСУ ID",
+                dormitoryNumber: "Номер общежития",
+                room: "Комната",
+                moveInDate: "Дата заселения"
             };
 
             let details = [];

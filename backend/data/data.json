@@ -193,5 +193,18 @@
         "foreigner": false,
         "notes": "",
         "id": 15
+    },
+    {
+        "name": "Имя",
+        "surname": "Фамилия",
+        "patronymic": "",
+        "group": "W1111",
+        "isuId": "111111",
+        "dormitoryNumber": null,
+        "room": null,
+        "moveInDate": null,
+        "foreigner": false,
+        "notes": "",
+        "id": 16
     }
 ]

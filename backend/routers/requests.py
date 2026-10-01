@@ -18,7 +18,7 @@ from backend.repository.json_crud import (
     get_all_students_json,
     get_student_by_id,
     update_student,
-    lock
+    lock,
 )
 
 from backend.services.sort_filter import (
@@ -90,7 +90,9 @@ def edit_student_by_id(student_id: int, student_info: StudentPatchSchema):
     """Patch some students values"""
 
     with lock:
-        validated_student = validate_patched_student(student_info, student_id=student_id)
+        validated_student = validate_patched_student(
+            student_info, student_id=student_id
+        )
         status = update_student(student_id, validated_student)
 
     if status:
