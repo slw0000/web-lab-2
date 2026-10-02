@@ -20,17 +20,29 @@ await loadPage(1);
 
 // парсер параметров группы, общаги и комнаты
 
-function parseParams(str) {
-  const numbers = str.split(',').map(item => item.trim())
+let groupPattern = /^[A-Z]\d{4}$/u;
+let dormitoryPattern = /^\d+$/u;
+let roomPattern = /^\d+$/u;
+
+function parseParams(str, pattern) {
+    const numbers = str.split(',').map(item => item.trim())
     .filter(item => item !== "");
 
-  if (numbers.length === 0) {
-    return null; 
-  } 
-  if (numbers.length === 1) {
-    return numbers[0];
-  }
-  return numbers;
+    if (numbers.length > 0) {
+        for (const number of numbers) {
+            if (!pattern.test(number)) {
+                showError(new Error(`Неверный формат параметра: ${number}`));
+            }
+    }
+
+    if (numbers.length === 0) {
+        return null; 
+    } 
+    if (numbers.length === 1) {
+        return numbers[0];
+    }
+    return numbers;
+}
 }
 
 
@@ -40,24 +52,32 @@ const form = document.getElementById('students-query-form')
 
 form.addEventListener('submit', async function(event) {
     event.preventDefault();
+    const errorContainer = document.querySelector(".error-container");
+    errorContainer.hidden = true;
     currentPage = 1;
 
     const formData = new FormData(form);
     const foreignerValue = formData.get("foreigner");
-    let rawParams = {
-        surname: formData.get('surname') || null,
-        name: formData.get('name') || null,
-        patronymic: formData.get('patronymic') || null,
-        group: parseParams(formData.get('group')) || null,
-        dormitoryNumber: parseParams(formData.get('dormitoryNumber')) || null,
-        room: parseParams(formData.get('room')) || null,
-        moveInDateFrom: formData.get('moveInDateFrom') || null,
-        moveInDateTo: formData.get('moveInDateTo') || null,
-        foreigner: foreignerValue === "" ? null : foreignerValue === "true",
-        sortBy: formData.get("sortBy"),
-        order: formData.get("order"),
-        page: currentPage,
-        limit: pageSize
+    let rawParams = {};
+    try {
+        rawParams = {
+            surname: formData.get('surname').trim() || null,
+            name: formData.get('name').trim() || null,
+            patronymic: formData.get('patronymic').trim() || null,
+            group: parseParams(formData.get('group'), groupPattern) || null,
+            dormitoryNumber: parseParams(formData.get('dormitoryNumber'), dormitoryPattern) || null,
+            room: parseParams(formData.get('room'), roomPattern) || null,
+            moveInDateFrom: formData.get('moveInDateFrom') || null,
+            moveInDateTo: formData.get('moveInDateTo') || null,
+            foreigner: foreignerValue === "" ? null : foreignerValue === "true",
+            sortBy: formData.get("sortBy"),
+            order: formData.get("order"),
+            page: currentPage,
+            limit: pageSize
+        }
+    } catch (error) {
+        showError(error);
+        return;
     }
 
     const params = new URLSearchParams();
@@ -72,6 +92,16 @@ form.addEventListener('submit', async function(event) {
         Array.isArray(rawParams.group) ||
         Array.isArray(rawParams.dormitoryNumber) ||
         Array.isArray(rawParams.room);
+
+    if (queryFilter) {
+        for (const key of ["group", "dormitoryNumber", "room"]) {
+            const value = rawParams[key];
+                
+            if (value !== null && !Array.isArray(value)) {
+                rawParams[key] = [value];
+            }
+        }
+    }
 
     currentFilters = queryFilter ? rawParams : params;
     loadPage(1);
@@ -161,6 +191,7 @@ deleteButton.onclick = async function() {
 
 async function updateTable(students) {
     try {
+
         const tableBody = document.getElementById('table-body');
         tableBody.innerHTML = '';
         let id = 0;

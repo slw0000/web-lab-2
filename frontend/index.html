@@ -25,17 +25,17 @@
                     <div class="filter-block">
                         <label class="filter-field">
                             <span>Фамилия</span>
-                            <input type="search" name="surname" placeholder="Например, Иванов">
+                            <input type="search" name="surname" placeholder="Например, Иванов" minlength="2" maxlength="50" pattern="[\p{L}]+" oninvalid="this.setCustomValidity('Введите фамилию, без пробелов и других символов')" oninput="this.setCustomValidity('')">
                         </label>
 
                         <label class="filter-field">
                             <span>Имя</span>
-                            <input type="search" name="name" placeholder="Например, Иван">
+                            <input type="search" name="name" placeholder="Например, Иван" minlength="2" maxlength="50" pattern="[\p{L}]+" oninvalid="this.setCustomValidity('Введите имя, без пробелов и других символов')" oninput="this.setCustomValidity('')">
                         </label>
 
                         <label class="filter-field">
                             <span>Отчество</span>
-                            <input type="search" name="patronymic" placeholder="Например, Иванович">
+                            <input type="search" name="patronymic" placeholder="Например, Иванович" minlength="2" maxlength="50" pattern="[\p{L}]+" oninvalid="this.setCustomValidity('Введите отчество, без пробелов и других символов')" oninput="this.setCustomValidity('')">
                         </label>
 
                         <label class="filter-field">
